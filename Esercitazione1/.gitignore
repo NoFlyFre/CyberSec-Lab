@@ -1,3 +1,4 @@
 *.pdf
 *.png
 SI/
+.DS_Store
