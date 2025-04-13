@@ -2,3 +2,32 @@
 *.png
 SI/
 .DS_Store
+
+# Compiled binaries
+*.o
+*.out
+*.exe
+*.so
+*.a
+*.lib
+*.dll
+
+# Build directories
+build/
+bin/
+obj/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.log
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
