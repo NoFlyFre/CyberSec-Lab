@@ -213,7 +213,6 @@ Password verificata con l’interfaccia Mutillidae.
 | **Perché usare `#` come commento?**               | È il simbolo di commento a riga singola in MySQL/MariaDB.                                |                                                  |
 | **Perché `LIMIT 1` nelle sub‑query?**             | Evita errori se esistono più omonimi (`username='simba'`).                               |                                                  |
 | **Perché invertire i byte nei payload overflow?** | La CPU x86 è little‑endian: il valore deve essere scritto in ordine inverso (LSB → MSB). |                                                  |
-| **Come disabilito ASLR?**                         | \`echo 0                                                                                 | sudo tee /proc/sys/kernel/randomize\_va\_space\` |
 
 ---
 
